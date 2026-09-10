@@ -1,0 +1,14 @@
+{
+  "name": "robotinaction",
+  "owner": {
+    "name": "RobotInAction",
+    "url": "https://robotinaction.tech"
+  },
+  "plugins": [
+    {
+      "name": "find-objects",
+      "source": "./",
+      "description": "Find objects in an image and see them boxed. 9 local detection models, nothing uploaded."
+    }
+  ]
+}

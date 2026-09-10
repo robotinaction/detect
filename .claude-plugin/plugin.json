@@ -1,0 +1,22 @@
+{
+  "name": "find-objects",
+  "version": "0.2.0",
+  "description": "Find objects in an image and get an annotated copy with boxes drawn on it. Runs 9 detection models locally - nothing uploaded, no API key.",
+  "author": {
+    "name": "RobotInAction",
+    "url": "https://robotinaction.tech"
+  },
+  "homepage": "https://robotinaction.tech/ai-agents.html",
+  "repository": "https://github.com/robotinaction/detect",
+  "license": "MIT",
+  "keywords": [
+    "object-detection",
+    "computer-vision",
+    "yolo",
+    "rf-detr",
+    "rt-detr",
+    "licence",
+    "license-compliance",
+    "agpl"
+  ]
+}

@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+
+# Model weights. rf-detr-base.pth alone is 356 MB - GitHub rejects anything
+# over 100 MB. These download themselves on first run; they are not ours to
+# ship and they do not belong in git.
+*.pt
+*.pth
+*.onnx
+
+# Test images: something to run detection on, and the annotated copy that
+# comes back. Scratch files, not part of the tool.
+*.jpg
+*.jpeg
+*.png
+*.webp
