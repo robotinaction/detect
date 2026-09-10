@@ -100,6 +100,33 @@ def pick_auto():
 # Drawing - the whole point is that you SEE the result, so this is on by
 # default. Uses Pillow, which every backend below already pulls in.
 # --------------------------------------------------------------------------
+# The 80 COCO classes, keyed by their category id. Note the gaps - COCO ids run
+# to 90 with numbers missing, and RF-DETR reports ids in that space, so this is
+# a dict rather than a list. Embedded rather than imported from
+# rfdetr.util.coco_classes because that is an internal path: when it moves, the
+# only symptom is every box labelled "18" instead of "dog".
+COCO_ID_TO_NAME = {
+    1: "person", 2: "bicycle", 3: "car", 4: "motorcycle", 5: "airplane",
+    6: "bus", 7: "train", 8: "truck", 9: "boat", 10: "traffic light",
+    11: "fire hydrant", 13: "stop sign", 14: "parking meter", 15: "bench",
+    16: "bird", 17: "cat", 18: "dog", 19: "horse", 20: "sheep", 21: "cow",
+    22: "elephant", 23: "bear", 24: "zebra", 25: "giraffe", 27: "backpack",
+    28: "umbrella", 31: "handbag", 32: "tie", 33: "suitcase", 34: "frisbee",
+    35: "skis", 36: "snowboard", 37: "sports ball", 38: "kite",
+    39: "baseball bat", 40: "baseball glove", 41: "skateboard",
+    42: "surfboard", 43: "tennis racket", 44: "bottle", 46: "wine glass",
+    47: "cup", 48: "fork", 49: "knife", 50: "spoon", 51: "bowl", 52: "banana",
+    53: "apple", 54: "sandwich", 55: "orange", 56: "broccoli", 57: "carrot",
+    58: "hot dog", 59: "pizza", 60: "donut", 61: "cake", 62: "chair",
+    63: "couch", 64: "potted plant", 65: "bed", 67: "dining table",
+    70: "toilet", 72: "tv", 73: "laptop", 74: "mouse", 75: "remote",
+    76: "keyboard", 77: "cell phone", 78: "microwave", 79: "oven",
+    80: "toaster", 81: "sink", 82: "refrigerator", 84: "book", 85: "clock",
+    86: "vase", 87: "scissors", 88: "teddy bear", 89: "hair drier",
+    90: "toothbrush",
+}
+
+
 # Deep, saturated colours. The pastel set this replaced disappeared against
 # pale backgrounds - a white wall, snow, an overexposed sky - which is exactly
 # where a lot of photos live.
@@ -276,13 +303,23 @@ def _rfdetr(cfg, path, conf):
     det = rfdetr.RFDETRBase().predict(Image.open(path).convert("RGB"), threshold=conf)
     try:
         from rfdetr.util.coco_classes import COCO_CLASSES as names
-    except Exception:  # noqa: BLE001
+        # Only trust it if it indexes by category id the way we expect. A
+        # packed 80-entry list would look fine and mislabel every single box.
+        names = names if names[1] == "person" else None
+    except Exception:  # noqa: BLE001 - internal path, may move or vanish
         names = None
+
     out = []
     for box, cid, score in zip(det.xyxy, det.class_id, det.confidence):
         x1, y1, x2, y2 = [round(float(v)) for v in box]
-        label = names[int(cid)] if names and int(cid) < len(names) else str(int(cid))
-        out.append({"object": label, "confidence": round(float(score), 3),
+        n = int(cid)
+        label = names[n] if names and n < len(names) else None
+        if not label or label in ("N/A", "__background__"):
+            label = COCO_ID_TO_NAME.get(n)
+        # "class 42" rather than a bare "42", so an unmapped id reads as an id
+        # and not as an object whose name happens to be a number.
+        out.append({"object": label or f"class {n}",
+                    "confidence": round(float(score), 3),
                     "box": [x1, y1, x2, y2]})
     return out
 
