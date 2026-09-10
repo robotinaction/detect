@@ -2,16 +2,16 @@
 """
 find_objects.py - find objects in an image, and save a copy with boxes drawn on it.
 
-    python find_objects.py photo.jpg
+    python find_objects.py image.jpg
 
-That's it. You get photo_detected.jpg with boxes drawn, plus the list of what
+That's it. You get image_detected.jpg with boxes drawn, plus the list of what
 was found. Everything runs on your own machine - no upload, no API key, no
 account.
 
 More options:
-    python find_objects.py photo.jpg --model yolov8m   # pick a specific model
-    python find_objects.py photo.jpg --conf 0.5        # only confident hits
-    python find_objects.py photo.jpg --no-image        # skip the output image
+    python find_objects.py image.jpg --model yolov8m   # pick a specific model
+    python find_objects.py image.jpg --conf 0.5        # only confident hits
+    python find_objects.py image.jpg --no-image        # skip the output image
     python find_objects.py --list                      # show all 9 models
 
 By default it picks whichever supported model you already have installed. If
@@ -418,7 +418,7 @@ def main():
         return 0
     if not args.image:
         p.print_usage()
-        return fail("Give me an image, e.g. find_objects.py photo.jpg")
+        return fail("Give me an image, e.g. find_objects.py image.jpg")
     if not os.path.isfile(args.image):
         return fail(f"No such file: {args.image}")
 

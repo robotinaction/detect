@@ -3,10 +3,10 @@
 **Ask your AI assistant what's in an image. Get the answer, with boxes drawn on it.**
 
 ```bash
-python find_objects.py photo.jpg
+python find_objects.py image.jpg
 ```
 
-→ `photo_detected.jpg` with boxes drawn, plus a list of what was found.
+→ `image_detected.jpg` with boxes drawn, plus a list of what was found.
 
 Runs on your own machine. Nothing is uploaded, no API key, no account, free.
 
@@ -16,7 +16,7 @@ Runs on your own machine. Nothing is uploaded, no API key, no account, free.
 
 Put `find_objects.py` in your project folder, then just ask:
 
-> *"What's in photo.jpg?"*
+> *"What's in image.jpg?"*
 > *"Count the people in this picture"*
 > *"Find all the cars in these screenshots"*
 
@@ -37,9 +37,9 @@ automatically:
 It's a normal command-line script:
 
 ```bash
-python find_objects.py photo.jpg                 # detect + annotate
-python find_objects.py photo.jpg --conf 0.5      # only confident results
-python find_objects.py photo.jpg --no-image      # JSON only
+python find_objects.py image.jpg                 # detect + annotate
+python find_objects.py image.jpg --conf 0.5      # only confident results
+python find_objects.py image.jpg --no-image      # JSON only
 python find_objects.py --list                    # see the 9 models
 ```
 
@@ -223,7 +223,7 @@ This one defaults to a permissive model instead, and if you're building
 something commercial you can make that explicit:
 
 ```bash
-python find_objects.py photo.jpg --commercial
+python find_objects.py image.jpg --commercial
 ```
 
 That restricts it to the four models that are genuinely free for business use,
