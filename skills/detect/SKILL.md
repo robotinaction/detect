@@ -92,8 +92,10 @@ Mention alternatives only if the user asks, or if their situation clearly calls
 for it:
 
 - **Building something commercial?** Add `--commercial`. Five of the nine models
-  are AGPL-3.0, which is not free to use in a commercial product — this flag
-  keeps to the four that are. The result's `note` field flags it either way.
+  are AGPL-3.0. That is not a ban on commercial use — it means shipping one
+  obliges you to release your own source under the same licence, or to buy a
+  commercial licence from the vendor. This flag keeps to the four models with no
+  such condition. The result's `note` field flags it either way.
 - **Need it faster?** The YOLO models are 3-4x quicker but are the AGPL ones.
 - **Small or distant objects?** Higher-accuracy models: `yolo26m`, `yolo11m`.
 
@@ -103,11 +105,11 @@ for it:
 | `rtdetr` | RT-DETR-L | 66.2 ms | 53.1 | ✅ |
 | `fasterrcnn` | Faster R-CNN R50 | 73.3 ms | 46.7 | ✅ |
 | `maskrcnn` | Mask R-CNN R50 | 107.9 ms | 47.4 | ✅ |
-| `yolov8m` | YOLOv8m | 16.2 ms | 50.2 | ❌ AGPL-3.0 |
-| `yolo11n` | YOLO11n | 17.4 ms | 39.5 | ❌ AGPL-3.0 |
-| `yolo26m` | YOLO26m | 20.6 ms | 62.1 | ❌ AGPL-3.0 |
-| `yolo11m` | YOLO11m | 20.8 ms | 54.7 | ❌ AGPL-3.0 |
-| `yolov9m` | YOLOv9m | 23.9 ms | 53.0 | ❌ AGPL-3.0 |
+| `yolov8m` | YOLOv8m | 16.2 ms | 50.2 | ⚠️ AGPL-3.0 |
+| `yolo11n` | YOLO11n | 17.4 ms | 39.5 | ⚠️ AGPL-3.0 |
+| `yolo26m` | YOLO26m | 20.6 ms | 62.1 | ⚠️ AGPL-3.0 |
+| `yolo11m` | YOLO11m | 20.8 ms | 54.7 | ⚠️ AGPL-3.0 |
+| `yolov9m` | YOLOv9m | 23.9 ms | 53.0 | ⚠️ AGPL-3.0 |
 
 Speeds are medians over 48 scenes on one Tesla V100 in plain PyTorch — they
 compare the models to *each other*, they do not predict the user's hardware.

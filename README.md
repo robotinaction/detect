@@ -53,7 +53,12 @@ packages, and **one is enough**:
 | `pip install rfdetr` | RF-DETR-B *(the default)* | ✅ |
 | `pip install torch torchvision` | Faster R-CNN, Mask R-CNN | ✅ |
 | `pip install transformers torch` | RT-DETR-L | ✅ |
-| `pip install ultralytics` | **All 5 YOLO models** — the fastest ones | ❌ AGPL-3.0 |
+| `pip install ultralytics` | **All 5 YOLO models** — the fastest ones | ⚠️ AGPL-3.0 |
+
+⚠️ does not mean you cannot use it. AGPL-3.0 allows commercial use, but if
+you distribute or serve your product you have to release your own source under
+the same licence, or buy a commercial licence from Ultralytics. ✅ means no such
+condition.
 
 Start with the first one:
 
