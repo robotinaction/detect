@@ -9,10 +9,26 @@ Runs object detection on the user's own machine with `find_objects.py` and
 produces **an annotated image with boxes drawn on it**, plus a list of what was
 found. Nothing is uploaded anywhere.
 
+## Where the script is
+
+This skill can reach the user two ways, and the script sits somewhere
+different in each. Work out which before running anything:
+
+- **Installed as a plugin** — the script ships with the plugin, not with the
+  user's project. Use `$CLAUDE_PLUGIN_ROOT/find_objects.py`. Their working
+  folder will not contain a copy, and there is no reason for it to.
+- **Copied into the project** — the user downloaded `find_objects.py` into
+  their own folder. Use `./find_objects.py`.
+
+If `$CLAUDE_PLUGIN_ROOT` is set, prefer it. Never tell the user to download the
+script when the plugin already supplied one.
+
+Below, `SCRIPT` means whichever of those two paths applies.
+
 ## Running it
 
 ```bash
-python find_objects.py <image>
+python "$SCRIPT" <image>
 ```
 
 That is the whole normal case. It picks whichever supported model is already
@@ -22,11 +38,11 @@ to stdout.
 Options, only when needed:
 
 ```bash
-python find_objects.py <image> --conf 0.5        # fewer, more confident results
-python find_objects.py <image> --model yolov8m   # force a specific model
-python find_objects.py <image> --no-image        # skip the annotated copy
-python find_objects.py <image> --commercial      # only business-safe models
-python find_objects.py --list                    # show the 9 models
+python "$SCRIPT" <image> --conf 0.5        # fewer, more confident results
+python "$SCRIPT" <image> --model yolov8m   # force a specific model
+python "$SCRIPT" <image> --no-image        # skip the annotated copy
+python "$SCRIPT" <image> --commercial      # only business-safe models
+python "$SCRIPT" --list                    # show the 9 models
 ```
 
 ## Always show the annotated image
