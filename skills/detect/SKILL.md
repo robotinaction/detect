@@ -86,6 +86,18 @@ and offer to run it. This also covers the common case where a package *is*
 installed but too old for the rest of the chain (`cannot import name X from Y`) —
 the error will name the package to upgrade rather than pass on the raw traceback.
 
+## If asked what this costs them, or how to remove it
+
+Nothing is uploaded, but the first run downloads a lot: 1-3 GB of packages
+(mostly PyTorch) plus the model's weights. RF-DETR's weights are 356 MB and
+land in **the user's working directory**, not a cache - tell them, and suggest
+adding `*.pth` and `*.pt` to `.gitignore` if the folder is a repository.
+
+Uninstalling the plugin removes only the plugin. To undo the rest they need
+`pip uninstall <package>`, deleting the weight files in the folder they ran
+from, and optionally `~/.cache/torch` and `~/.cache/huggingface`. The README
+has the full list.
+
 ## Reading the result
 
 | Field | Use it for |

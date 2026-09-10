@@ -76,15 +76,89 @@ bottle, laptop and so on.
 JPEG, PNG, WebP, BMP and TIFF all work, transparency and greyscale included.
 The annotated copy is written back in the same format as the original.
 
+## What it puts on your disk
+
+Nothing is uploaded, but plenty is downloaded. Worth knowing before you start,
+especially on a small drive or a metered connection.
+
+**The packages.** Almost all of the weight is PyTorch, which every one of the
+four options depends on. Expect **1–3 GB**, varying a lot by platform — the
+Linux wheels bundle CUDA, the Windows and macOS ones do not. To see what it
+actually cost on your machine:
+
+```bash
+pip show -f torch | head -3
+```
+
+They go into the `site-packages` of whichever Python ran `pip`. If that is not
+obvious to you, this prints it:
+
+```bash
+python -c "import site; print(site.getsitepackages())"
+```
+
+**The model weights**, downloaded the first time a given model runs:
+
+| Model | Size | Lands in |
+|---|---|---|
+| RF-DETR-B | 356 MB | **the folder you ran from** |
+| YOLO (`.pt`) | 6–50 MB | **the folder you ran from** |
+| Faster R-CNN, Mask R-CNN | ~170 MB each | `~/.cache/torch/` |
+| RT-DETR-L | ~170 MB | `~/.cache/huggingface/` |
+
+The first two rows surprise people: those land in your **working directory**,
+next to the image you ran on. Add `*.pth` and `*.pt` to your `.gitignore`
+before you commit anything, or a 356 MB file goes up with it.
+
+## Removing it
+
+Uninstalling the Claude Code plugin removes the plugin's own files — about
+38 KB — and nothing else. It has no idea pip ever ran. Undo the rest yourself:
+
+```bash
+pip uninstall rfdetr
+```
+
+Swap in whichever you installed: `ultralytics`, `transformers`, or
+`torch torchvision`. Note that pip leaves dependencies behind on purpose, since
+something else on the machine may need them — so `torch` stays until you say
+otherwise.
+
+Then the weights in your working folder:
+
+```bash
+rm -f rf-detr-base.pth *.pt
+```
+
+```powershell
+Remove-Item rf-detr-base.pth, *.pt
+```
+
+And the shared caches, if nothing else on the machine uses them:
+
+```bash
+rm -rf ~/.cache/torch ~/.cache/huggingface
+```
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.cache\torch", "$env:USERPROFILE\.cache\huggingface"
+```
+
+Your annotated `*_detected.*` images are ordinary files. Keep or delete them as
+you like — nothing else refers to them.
+
 ## Example output
 
 ```json
 {
   "ok": true,
-  "found": "2 persons, 1 car, 1 sports ball",
-  "count": 4,
-  "objects": { "person": 2, "car": 1, "sports ball": 1 },
-  "annotated_image": "photo_detected.jpg",
+  "found": "1 person, 1 dog, 1 bicycle, 1 car, 1 bench, 1 backpack, 1 potted plant, 1 traffic light",
+  "count": 8,
+  "objects": {
+    "person": 1, "dog": 1, "bicycle": 1, "car": 1,
+    "bench": 1, "backpack": 1, "potted plant": 1, "traffic light": 1
+  },
+  "annotated_image": "park_detected.jpg",
   "model": "RF-DETR-B"
 }
 ```
