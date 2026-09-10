@@ -99,16 +99,25 @@ python -c "import site; print(site.getsitepackages())"
 
 **The model weights**, downloaded the first time a given model runs:
 
-| Model | Size | Lands in |
+| Model | Size | Usually lands in |
 |---|---|---|
-| RF-DETR-B | 356 MB | **the folder you ran from** |
-| YOLO (`.pt`) | 6–50 MB | **the folder you ran from** |
-| Faster R-CNN, Mask R-CNN | ~170 MB each | `~/.cache/torch/` |
-| RT-DETR-L | ~170 MB | `~/.cache/huggingface/` |
+| RF-DETR-B | 356 MB | `~/.roboflow/models/` |
+| YOLO (`.pt`) | 6–50 MB | the folder you ran from |
+| Faster R-CNN, Mask R-CNN | ~170 MB each | `~/.cache/torch/hub/checkpoints/` |
+| RT-DETR-L | ~170 MB | `~/.cache/huggingface/hub/` |
 
-The first two rows surprise people: those land in your **working directory**,
-next to the image you ran on. Add `*.pth` and `*.pt` to your `.gitignore`
-before you commit anything, or a 356 MB file goes up with it.
+**These paths move between versions, so trust your own disk over this table.**
+RF-DETR has been seen doing both: a recent install put the file in
+`~/.roboflow/models/`, an older one dropped it straight into the working
+directory. This finds it wherever it went:
+
+```bash
+find ~ . -size +10M \( -name "*.pth" -o -name "*.pt" \) 2>/dev/null
+```
+
+Because a weight file *can* land in your working directory, add `*.pth` and
+`*.pt` to `.gitignore` if that folder is a repository. It costs nothing, and
+otherwise a 356 MB file goes up with your next commit.
 
 ## Removing it
 
@@ -124,7 +133,17 @@ Swap in whichever you installed: `ultralytics`, `transformers`, or
 something else on the machine may need them — so `torch` stays until you say
 otherwise.
 
-Then the weights in your working folder:
+Then the weights. The big one first:
+
+```bash
+rm -rf ~/.roboflow/models
+```
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.roboflow\models"
+```
+
+Then anything left in the folder you ran from:
 
 ```bash
 rm -f rf-detr-base.pth *.pt
@@ -142,6 +161,13 @@ rm -rf ~/.cache/torch ~/.cache/huggingface
 
 ```powershell
 Remove-Item -Recurse -Force "$env:USERPROFILE\.cache\torch", "$env:USERPROFILE\.cache\huggingface"
+```
+
+pip also keeps a wheel cache that nothing ever clears. After a torch install
+it is often several GB:
+
+```bash
+pip cache purge
 ```
 
 Your annotated `*_detected.*` images are ordinary files. Keep or delete them as

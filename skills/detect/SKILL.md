@@ -89,9 +89,10 @@ the error will name the package to upgrade rather than pass on the raw traceback
 ## If asked what this costs them, or how to remove it
 
 Nothing is uploaded, but the first run downloads a lot: 1-3 GB of packages
-(mostly PyTorch) plus the model's weights. RF-DETR's weights are 356 MB and
-land in **the user's working directory**, not a cache - tell them, and suggest
-adding `*.pth` and `*.pt` to `.gitignore` if the folder is a repository.
+(mostly PyTorch) plus the model's weights. RF-DETR's are 356 MB, usually in
+`~/.roboflow/models/` but in the working directory on older versions. Never
+state a path as fact - find it. Suggest adding `*.pth` and `*.pt` to
+`.gitignore` if the folder is a repository, since a weight file can land there.
 
 Uninstalling the plugin removes only the plugin. To undo the rest they need
 `pip uninstall <package>`, deleting the weight files in the folder they ran
