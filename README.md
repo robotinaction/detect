@@ -1,6 +1,6 @@
 # find_objects
 
-**Ask your AI assistant what's in a photo. Get the answer, with boxes drawn on it.**
+**Ask your AI assistant what's in an image. Get the answer, with boxes drawn on it.**
 
 ```bash
 python find_objects.py photo.jpg
